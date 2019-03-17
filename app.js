@@ -5,7 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var employeesRouter = require('./routes/employees');
+var productsRouter = require('./routes/products');
 
 var app = express();
 
@@ -17,8 +18,8 @@ app.use(cookieParser());
 // CONTROLLERS
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
+app.use('/employees', employeesRouter);
+app.use('/products', productsRouter);
 
 
 
@@ -29,7 +30,7 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
+  // set locals, only proempplsg error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
