@@ -3,10 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var cors = require('cors');
 
-var indexRouter = require('./routes/index');
-var employeesRouter = require('./routes/employees');
-var productsRouter = require('./routes/products');
 
 var app = express();
 
@@ -15,8 +13,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// CONTROLLERS
+app.use(cors());
 
+// ROUTERS
+var indexRouter = require('./routes/index');
+var employeesRouter = require('./routes/employees');
+var productsRouter = require('./routes/products');
+
+
+// CONTROLLERS
 app.use('/', indexRouter);
 app.use('/employees', employeesRouter);
 app.use('/products', productsRouter);
