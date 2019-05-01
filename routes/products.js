@@ -7,18 +7,11 @@ router.get('/', function (req, res) {
     repos.getProducts(rows => res.json(rows))
   });
   
-router.get('/byId/:userId', function (req, res) { 
-    console.log(req.params.userId);
-  repos.getProductById(rows => res.json(rows), req.params.userId)
+// per product ->http://localhost:3000/products/byId/1
+router.get('/:id', function (req, res) { 
+    console.log(req.params.id);
+  repos.getProductById(rows => res.json(rows), req.params.id)
 });
-
-router.get('/byName/:productName', function (req, res) {
-    repos.getProductsByName(rows => res.json(rows), req.params.productName)
-  });
-  
-router.get('/byBrand/:productBrand', function (req, res) {
-    repos.getProductsByBrand(rows => res.json(rows), req.params.productBrand)
-  });
 
 
 module.exports = router;
