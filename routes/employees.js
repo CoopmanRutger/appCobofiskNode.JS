@@ -7,4 +7,12 @@ router.get('/', function(req, res, next) {
   repos.getEmployees(rows => res.json(rows))
 });
 
+// todo : post werknemer toevoegen!
+// router.post('/add', function (req, res) { 
+//   console.log(req.params.storeId);
+// repos.addEmployee(rows => res.json(rows), req.params.storeId)
+// });
+
+
+
 module.exports = router;
