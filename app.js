@@ -19,14 +19,15 @@ app.use(cors());
 var indexRouter = require('./routes/index');
 var employeesRouter = require('./routes/employees');
 var productsRouter = require('./routes/products');
-
+var storesRouter = require('./routes/stores');
+var deliveryNotesRouter = require('./routes/deliveryNotes');
 
 // CONTROLLERS
 app.use('/', indexRouter);
 app.use('/employees', employeesRouter);
 app.use('/products', productsRouter);
-
-
+app.use('/stores', storesRouter);
+app.use('/deliveryNotes', deliveryNotesRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
