@@ -8,10 +8,21 @@ router.get('/', function(req, res, next) {
 });
 
 // todo : post werknemer toevoegen!
-// router.post('/add', function (req, res) { 
-//   console.log(req.params.storeId);
-// repos.addEmployee(rows => res.json(rows), req.params.storeId)
-// });
+router.post('/add', function (req, res) { 
+  console.log("post");
+  console.log(req.body);
+  let name = req.body.name;
+  let age = req.body.age;
+  let job = req.body.job;
+  let storeId = req.body.storeId;
+  let username = req.body.username;
+  let password = req.body.password;
+  res.end("yes");
+
+  console.log(name, age, job, storeId, username, password);
+
+repos.addEmployee({storeId, name, age, job, username, password}, rows => res.json(rows))
+});
 
 
 
