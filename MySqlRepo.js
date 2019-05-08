@@ -12,12 +12,12 @@ function getEmployees(callback) {
     executeQuery("select * from employees", {}, callback);
 }
 
-function addEmployee({storeId, name, age, duty, username, password}, callback) {
-    executeQuery("INSERT INTO employees (:storeId, :name, :age, :duty, :username, :password)" 
-                + " VALUES (:storeId ,:name ,:age , :duty ,:username ,:password )", 
-                {storeId: storeId, name: name, age: age, duty: duty, username: username, password: password}, callback)
-    // "INSERT INTO countries VALUES (:country_id, :country_name)",
-    //   {country_id: 90, country_name: "Tonga"},
+function addEmployee({storeId, name, age, duty, username, password, startedOn}, callback) {
+    console.log(storeId, name, age, duty, username, password, startedOn);
+
+    executeQuery("INSERT INTO employees (storeId, name, age, duty, username, password, created_at)" 
+                + " VALUES (? ,? ,? ,? ,? ,?,? )", 
+                [storeId, name ,age ,duty ,username ,password, startedOn], callback)
 }
 
 // Products
