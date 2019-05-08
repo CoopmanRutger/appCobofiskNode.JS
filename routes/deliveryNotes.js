@@ -9,13 +9,12 @@ router.get('/', function (req, res) {
 
  //  bestelbon
 router.get('/:id', function (req, res) { 
-    console.log(req.params.id);
-  repos.getDeliveryNotesById(rows => res.json(rows), req.params.id)
+  repos.getDeliveryNotesById(req.params.id, rows => res.json(rows[0]))
 });
 
 // producten per bestelbonnen
 router.get('/:id/products', function (req, res) {
-    repos.getProductsByDeliveryNoteId(rows => res.json(rows), req.params.id)
+    repos.getProductsByDeliveryNoteId(req.params.id, rows => res.json(rows))
   });
 
-module.exports = router;
+module.exports = router;        

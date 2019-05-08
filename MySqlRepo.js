@@ -8,121 +8,79 @@ const dbConfig = {
 const mysql = require('mysql')
 
 // Employees
-function getEmployees(handler) {
-    executeQuery("select * from employees", (err, rows, fields) => {
-        if (err) throw err
-        handler(rows)
-    })
+function getEmployees(callback) {
+    executeQuery("select * from employees", {}, callback);
 }
 
+function addEmployee({storeId, name, age, duty, username, password, startedOn}, callback) {
+    console.log(storeId, name, age, duty, username, password, startedOn);
 
-function addEmployee(handler, {storeId, name, age, duty, username, password}) {
-    executeQuery("INSERT INTO employees (storeId, name, age, duty, username, password)" 
-                + "VALUES (" + storeId + ", " + name + ", " + age + ", " + duty + ", "+ username + ", " + password + ")", (err, rows, fields) => {
-        if (err) throw err
-        handler(rows)
-    })
+    executeQuery("INSERT INTO employees (storeId, name, age, duty, username, password, created_at)" 
+                + " VALUES (? ,? ,? ,? ,? ,?,? )", 
+                [storeId, name ,age ,duty ,username ,password, startedOn], callback)
 }
-
 
 // Products
-function getProducts(handler) {
-    executeQuery("select * from products", (err, rows, fields) => {
-        if (err) throw err
-        handler(rows)
-    })
+function getProducts(callback) {
+    executeQuery("select * from products", {}, callback);
 }
 
-function getProductById(handler, id) {
-    //todo: beveiligen parmeter ? 
-    executeQuery("select * from products where id=" + id, (err, rows, fields) => {
-        if (err) throw err
-        handler(rows)
-    })
+function getProductById(id, callback) {
+    executeQuery('SELECT * FROM products WHERE id = ? ' , [id], callback);
 }
 
-function getProductByStoreId(handler, storeId) {
-    //todo: beveiligen parmeter ? 
-    executeQuery("select * from products where storeId=" + storeId, (err, rows, fields) => {
-        if (err) throw err
-        handler(rows)
-    })
+function getProductByStoreId(storeId, callback) {
+    executeQuery("select * from products where storeId=?", [storeId], callback);
 }
-
 
 // Delivery notes
-function getDeliveryNotes(handler) {
-    executeQuery("select * from deliveryNotes", (err, rows, fields) => {
-        if (err) throw err
-        handler(rows)
-    })
+function getDeliveryNotes(callback) {
+    executeQuery("select * from deliveryNotes", {}, callback);
 }
 
-function getDeliveryNotesById(handler, id) {
-    //todo: beveiligen parmeter ? 
-    executeQuery("select * from deliveryNotes where id=" + id, (err, rows, fields) => {
-        if (err) throw err
-        handler(rows)
-    })
+function getDeliveryNotesById(id, callback) {
+    executeQuery("select * from deliveryNotes where id=?", [id], callback);
 }
 
-function getDeliveryNotesByStoreId(handler, storeId) {
-    //todo: beveiligen parmeter ? 
-    executeQuery("select * from deliveryNotes where storeId=" + storeId, (err, rows, fields) => {
-        if (err) throw err
-        handler(rows)
-    })
+function getDeliveryNotesByStoreId(storeId, callback) {
+    executeQuery("select * from deliveryNotes where storeId=?", [storeId], callback);
 }
 
-function getProductsByDeliveryNoteId(handler, id) {
-    //todo: beveiligen parmeter ? 
-    executeQuery("select * FROM products WHERE id in (SELECT productid FROM deliveryNotes WHERE id =" + id, (err, rows, fields) => {
-        if (err) throw err
-        handler(rows)
-    })
+function getProductsByDeliveryNoteId(id, callback) {
+    executeQuery("SELECT * FROM products WHERE id in (SELECT productid FROM deliveryNotes WHERE id =?)", [id], callback);
 }
 
-
-function getProductsByStoreId(handler, storeId) {
-    //todo: beveiligen parmeter ? 
-    executeQuery("select * FROM products WHERE id in (SELECT productid FROM deliveryNotes WHERE storeId =" + storeId, (err, rows, fields) => {
-        if (err) throw err
-        handler(rows)
-    })
+function getProductsByStoreId(storeId, callback) {
+    executeQuery("select * FROM products WHERE id in (SELECT productid FROM deliveryNotes WHERE storeId =?)" , [storeId], callback);
 }
-
-
 
 // Stores
-function getStores(handler) {
-    executeQuery("select * from stores", (err, rows, fields) => {
-        if (err) throw err
-        handler(rows)
-    })
+function getStores(callback) {
+    executeQuery("select * from stores", {}, callback);
 }
 
-function getStoresById(handler, id) {
-    //todo: beveiligen parmeter ? 
-    executeQuery("select * from stores where id=" + id, (err, rows, fields) => {
-        if (err) throw err
-        handler(rows)
-    })
+function getStoresById(id, callback) {
+    executeQuery("select * from stores where id=?", [id], callback);
 }
 
-function getEmployeesByStoreId(handler, storeId) {
-    //todo: beveiligen parmeter ? 
-    executeQuery("select * from employees where storeId=" + storeId, (err, rows, fields) => {
-        if (err) throw err
-        handler(rows)
-    })
+function getEmployeesByStoreId(storeId, callback) {
+    executeQuery("select * from employees where storeId=?", [storeId], callback);
 }
 
-
-function executeQuery(query, handler) {
+function executeQuery(query, params, callback) {
+    console.log("executeQuery");
     const connection = mysql.createConnection(dbConfig)
-    connection.connect()
-    connection.query(query, handler)
-    connection.end()
+
+    connection.connect(err => {
+        console.log("connected");
+        if (err) throw err;
+        connection.query(query, params, (err, result) => {
+            console.log("query");
+            if (err) throw err;
+            callback(result);
+            connection.end();
+            });
+    })
 }
 
 
@@ -132,6 +90,7 @@ module.exports = {
     
     getProducts,
     getProductById,
+    getProductByStoreId,
 
     getDeliveryNotes,
     getDeliveryNotesById,
@@ -139,7 +98,7 @@ module.exports = {
 
     getStores,
     getStoresById, 
-    getProductByStoreId,
+    getProductsByStoreId,
     getDeliveryNotesByStoreId,
     getEmployeesByStoreId,
 
