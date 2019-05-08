@@ -7,7 +7,6 @@ router.get('/', function(req, res, next) {
 
   repos.getEmployees(rows => res.json(rows))
 });
-// todo : post werknemer toevoegen!
 router.post('/add', function (req, res) { 
   console.log(req.body);
   let name = req.body.name;
@@ -17,7 +16,6 @@ router.post('/add', function (req, res) {
   let username = req.body.username;
   let password = req.body.password;
   let startedOn = req.body.startedOn;
-  // res.setHeader("Methode", "POST");
   // res.send("tcheck postrequest");
 
   repos.addEmployee({storeId, name, age, duty, username, password, startedOn}, rows => res.json(rows))
