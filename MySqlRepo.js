@@ -12,12 +12,12 @@ function getEmployees(callback) {
     executeQuery("select * from employees", {}, callback);
 }
 
-function addEmployee({storeId, name, age, duty, username, password, startedOn}, callback) {
+function addEmployee({ storeId, name, age, duty, username, password, startedOn }, callback) {
     console.log(storeId, name, age, duty, username, password, startedOn);
 
-    executeQuery("INSERT INTO employees (storeId, name, age, duty, username, password, created_at)" 
-                + " VALUES (? ,? ,? ,? ,? ,?,? )", 
-                [storeId, name ,age ,duty ,username ,password, startedOn], callback)
+    executeQuery("INSERT INTO employees (storeId, name, age, duty, username, password, created_at)"
+        + " VALUES (? ,? ,? ,? ,? ,?,? )",
+        [storeId, name, age, duty, username, password, startedOn], callback)
 }
 
 // Products
@@ -26,7 +26,7 @@ function getProducts(callback) {
 }
 
 function getProductById(id, callback) {
-    executeQuery('SELECT * FROM products WHERE id = ? ' , [id], callback);
+    executeQuery('SELECT * FROM products WHERE id = ? ', [id], callback);
 }
 
 function getProductByStoreId(storeId, callback) {
@@ -51,7 +51,7 @@ function getProductsByDeliveryNoteId(id, callback) {
 }
 
 function getProductsByStoreId(storeId, callback) {
-    executeQuery("select * FROM products WHERE id in (SELECT productid FROM deliveryNotes WHERE storeId =?)" , [storeId], callback);
+    executeQuery("select * FROM products WHERE id in (SELECT productid FROM deliveryNotes WHERE storeId =?)", [storeId], callback);
 }
 
 // Stores
@@ -79,7 +79,7 @@ function executeQuery(query, params, callback) {
             if (err) throw err;
             callback(result);
             connection.end();
-            });
+        });
     })
 }
 
@@ -87,7 +87,7 @@ function executeQuery(query, params, callback) {
 module.exports = {
     //get
     getEmployees,
-    
+
     getProducts,
     getProductById,
     getProductByStoreId,
@@ -97,11 +97,11 @@ module.exports = {
     getProductsByDeliveryNoteId,
 
     getStores,
-    getStoresById, 
+    getStoresById,
     getProductsByStoreId,
     getDeliveryNotesByStoreId,
     getEmployeesByStoreId,
 
-     //post
-     addEmployee,
+    //post
+    addEmployee,
 }
